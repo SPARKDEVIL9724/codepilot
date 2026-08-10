@@ -1,6 +1,6 @@
 from .models import User
 from rest_framework.generics import CreateAPIView
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer, ProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,11 +27,16 @@ class LoginView(APIView):
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        user = request.user
+        serializer = ProfileSerializer(request.user)
 
-        return Response({
-            "username": user.username,
-            "email": user.email,
-            "github_username": user.github_username,
-            "tech_stack": user.tech_stack,
-        })
+        return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+        
