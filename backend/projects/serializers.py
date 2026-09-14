@@ -11,4 +11,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectMember
-        fields = ["user", "role"]
+        fields = ["id", "user", "role"]
+        read_only_fields = ["id"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.context["request"].method in ["PATCH", "PUT"]:
+            self.fields["user"].read_only = True
