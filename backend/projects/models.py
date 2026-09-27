@@ -12,7 +12,7 @@ class Project(models.Model):
         return self.name
 
 class ProjectMember(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="project_memberships")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     ROLE_CHOICES = [
