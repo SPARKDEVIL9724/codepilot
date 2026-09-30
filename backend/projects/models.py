@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
+from workspaces.models import Workspace
 
 class Project(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="projects")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="owned_projects")
     name = models.CharField(max_length=100)
     description = models.TextField(blank = True)
@@ -12,15 +14,13 @@ class Project(models.Model):
         return self.name
 
 class ProjectMember(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="project_memberships")
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
     ROLE_CHOICES = [
-            ('OWNER', 'Owner'),
             ('DEVELOPER', 'Developer'),
             ('VIEWER', 'Viewer'),
         ]
-
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="project_memberships")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="VIEWER")
 
     class Meta:

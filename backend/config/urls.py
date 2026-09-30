@@ -5,5 +5,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/' ,include('users.urls')),
     path('api/workspaces/' ,include('workspaces.urls')),
-    path('api/projects/' ,include('projects.urls')),
+    path('api/workspaces/<int:workspace_id>/projects/' ,include('projects.urls')),
 ]

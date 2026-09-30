@@ -24,6 +24,7 @@ class WorkspaceDetailView(RetrieveUpdateDestroyAPIView):
     model = Workspace
     serializer_class = WorkspaceSerializer
     permission_classes = [IsAuthenticated]
+    lookup_url_kwarg = "workspace_id"
     
     def get_queryset(self):
         return Workspace.objects.filter(
@@ -69,6 +70,7 @@ class WorkspaceMemberDetailView(RetrieveUpdateDestroyAPIView):
     model = WorkspaceMember
     serializer_class = WorkspaceMemberSerializer
     permission_classes = [IsAuthenticated]
+    lookup_url_kwarg = "member_id"
 
     def get_queryset(self):
         workspace = get_object_or_404(Workspace, id=self.kwargs["workspace_id"])
