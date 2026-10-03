@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'workspaces',
     'projects',
     'documents',
+    'codesnippets',
 ]
 
 MIDDLEWARE = [
