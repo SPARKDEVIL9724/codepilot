@@ -28,7 +28,7 @@ class DocumentListCreateView(ListCreateAPIView):
         if not (
             self.request.user == project.owner
             or project.members.filter(
-                user = self.request.user
+                pk = self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("User cannot access documents")
@@ -40,7 +40,7 @@ class DocumentListCreateView(ListCreateAPIView):
         if not(
             self.request.user == project.owner
             or project.members.filter(
-                user = self.request.user
+                pk = self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("Only project owner or members can create Markdown")
@@ -68,7 +68,7 @@ class DocumentDetailView(RetrieveUpdateDestroyAPIView):
         if not (
             self.request.user == project.owner
             or project.members.filter(
-                    user = self.request.user
+                    pk = self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("User cannot access documents")

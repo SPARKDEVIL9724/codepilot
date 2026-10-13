@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/workspaces/<int:workspace_id>/projects/' ,include('projects.urls')),
     path('api/workspaces/<int:workspace_id>/projects/<int:project_id>/documents/' ,include('documents.urls')),
     path('api/workspaces/<int:workspace_id>/projects/<int:project_id>/codesnippets/' ,include('codesnippets.urls')),
+    path('api/workspaces/<int:workspace_id>/projects/<int:project_id>/codesnippets/<int:snippet_id>/review/' ,include('aireviews.urls')),
 ]

@@ -27,7 +27,7 @@ class CodeSnippetListCreateView(ListCreateAPIView):
         if not (
             self.request.user == project.owner
             or project.members.filter(
-                user=self.request.user
+                pk=self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("User not a member of this project")
@@ -40,7 +40,7 @@ class CodeSnippetListCreateView(ListCreateAPIView):
         if not (
             self.request.user == project.owner
             or project.members.filter(
-                user=self.request.user
+                pk=self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("Only project owner or members can create code snippets")
@@ -67,7 +67,7 @@ class CodeSnippetDetailView(RetrieveUpdateDestroyAPIView):
         if not (
             project.owner == self.request.user
             or project.members.filter(
-                user=self.request.user
+                pk=self.request.user.pk
             ).exists()
         ):
             raise PermissionDenied("user not a member of this project")
