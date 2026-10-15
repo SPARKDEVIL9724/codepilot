@@ -134,3 +134,59 @@ class UserAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("access", response.data)
+
+    def test_login_with_unknown_identifier(self):
+        response = self.client.post(
+            "/api/auth/login/",
+            {
+                "identifier": "UnknownUser",
+                "password": "UnknownPassword",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_register_with_duplicae_username(self):
+        response = self.client.post(
+            "/api/auth/register/",
+            {
+                "username": "autoTestUser",
+                "email": "test.emmail@example.com",
+                "password": "SomePassword121!",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_register_with_missing_username(self):
+        response = self.client.post(
+            "/api/auth/register/",
+            {
+                "email": "new.email@example.com",
+                "password": "newPassword147@",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_refresh_with_invalid_token(self):
+        response = self.client.post(
+            "/api/auth/refresh/",
+            {"refresh": "invalid_token"},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_profile_update_with_invalid_github_username(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch(
+            "/api/auth/me/",
+            {"github_username": "x"*51},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
